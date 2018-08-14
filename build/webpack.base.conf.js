@@ -27,7 +27,8 @@ module.exports = {
       vue$: "vue/dist/vue.esm.js",
       "@": resolve("src"),
       static: resolve("static"),
-      pages: resolve("src/pages")
+      pages: resolve("src/pages"),
+      vendors: resolve("vendors")
     }
   },
   module: {
