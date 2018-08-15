@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import Logo from "pages/layout/Logo";
-import HeaderNavs from "pages/layout/HeaderNavs";
+import Logo from "views/layout/Logo";
+import HeaderNavs from "views/layout/HeaderNavs";
 
 export default {
   name: "myHeader",

@@ -4,6 +4,16 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 
+import axios from "axios";
+// import store from "./store/firebase-store";
+
+// Import relatvie CSS files
+require("static/css/bootstrap.min.css");
+require("static/css/bootadmin.min.css");
+require("static/css/all.css");
+require("static/css/datatables.min.css");
+require("static/css/fullcalendar.min.css");
+
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */

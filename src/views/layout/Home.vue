@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import Header from "pages/layout/Header";
-import Aside from "pages/layout/Aside";
+import Header from "views/layout/Header";
+import Aside from "views/layout/Aside";
 
 export default {
   name: "home",
