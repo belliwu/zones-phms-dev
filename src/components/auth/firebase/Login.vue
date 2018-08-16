@@ -1,338 +1,128 @@
 <template>
-  <div class="wrapper fadeInDown">
-    <div id="formContent">
-      <!-- Tabs Titles -->
+  <div id="login">
+    <div class="login-form">
+      <form @submit.prevent="onSubmit">
 
-      <!-- Icon -->
-      <div class="fadeIn first">
-        <img src="static/images/user.svg" id="icon" alt="User Icon" />
-      </div>
+        <div class="input">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" v-model="email">
+        </div>
 
-      <!-- Login Form -->
-      <form>
-        <input type="text" id="login" class="fadeIn second" name="login" v-model="user_info.email" placeholder="Email" auto-complete="email">
+        <div class="input">
+          <label for="password">密碼</label>
+          <input type="password" id="password" v-model="password">
+        </div>
 
-        <input type="text" id="password" class="fadeIn third" name="login" v-model="user_info.password" placeholder="密碼" auto-complete="off">
-
-        <input type="submit" class="fadeIn fourth" @click.native.prevent="onSubmit" value="提交">
+        <div class="submit">
+          <button type="submit" class="myButton">提交</button>
+        </div>
       </form>
-
-      <!-- Remind Passowrd -->
-      <div id="formFooter">
-        <a class="underlineHover" href="#">忘記密碼 ?</a>
-      </div>
-
     </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "login",
   data() {
     return {
-      user_info: {
-        email: null,
-        password: null,
-        token: null
-      },
-      feedback: null
+      email: "",
+      password: "",
+      tokern: ""
     };
   },
   methods: {
     onSubmit() {
       const formData = {
-        password: this.user_info.password,
-        email: this.user_info.email,
-        token: this.user_info.token
+        email: this.email,
+        password: this.password
       };
-
       console.log(formData);
-
-      //Below statements will occurs aysnc, problem in network
-      this.$store.dispatch("login", formData);
-      // this.$router.push({ name: "Login" });
+      axios
+        .post("https://tmuh-arms-6b123.firebaseio.com/user.json", formData)
+        .then(res => console.log(res))
+        .catch(error => console.log(error));
+      // this.$store.dispatch('signup', formData)
     }
   }
 };
 </script>
 
 <style scoped>
-/* BASIC */
-html {
-  background-color: #56baed;
-}
-
-body {
-  font-family: "Poppins", sans-serif;
-  height: 100vh;
-}
-
-a {
-  color: #92badd;
-  display: inline-block;
-  text-decoration: none;
-  font-weight: 400;
-}
-
-h2 {
-  text-align: center;
-  font-size: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
-  display: inline-block;
-  margin: 40px 8px 10px 8px;
-  color: #cccccc;
-}
-
-/* STRUCTURE */
-
-.wrapper {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  min-height: 100%;
+.login-form {
+  width: 400px;
+  margin: 30px auto;
+  border: 1px solid #eee;
+  border-radius: 15px;
   padding: 20px;
+  box-shadow: 0 2px 3px #ccc;
 }
 
-#formContent {
-  -webkit-border-radius: 10px 10px 10px 10px;
-  border-radius: 10px 10px 10px 10px;
-  background: #fff;
-  padding: 30px;
-  width: 90%;
-  max-width: 450px;
-  position: relative;
-  padding: 0px;
-  -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-  box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
-  text-align: center;
+.input {
+  margin: 10px auto;
 }
 
-#formFooter {
-  background-color: #f6f6f6;
-  border-top: 1px solid #dce8f1;
-  padding: 25px;
-  text-align: center;
-  -webkit-border-radius: 0 0 10px 10px;
-  border-radius: 0 0 10px 10px;
-}
-
-/* TABS */
-
-h2.inactive {
-  color: #cccccc;
-}
-
-h2.active {
-  color: #0d0d0d;
-  border-bottom: 2px solid #5fbae9;
-}
-
-/* FORM TYPOGRAPHY*/
-
-input[type="button"],
-input[type="submit"],
-input[type="reset"] {
-  background-color: #56baed;
-  border: none;
-  color: white;
-  padding: 15px 80px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  text-transform: uppercase;
-  font-size: 13px;
-  -webkit-box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
-  box-shadow: 0 10px 30px 0 rgba(95, 186, 233, 0.4);
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-  margin: 5px 20px 40px 20px;
-  -webkit-transition: all 0.3s ease-in-out;
-  -moz-transition: all 0.3s ease-in-out;
-  -ms-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-}
-
-input[type="button"]:hover,
-input[type="submit"]:hover,
-input[type="reset"]:hover {
-  background-color: #39ace7;
-}
-
-input[type="button"]:active,
-input[type="submit"]:active,
-input[type="reset"]:active {
-  -moz-transform: scale(0.95);
-  -webkit-transform: scale(0.95);
-  -o-transform: scale(0.95);
-  -ms-transform: scale(0.95);
-  transform: scale(0.95);
-}
-
-input[type="text"] {
-  background-color: #f6f6f6;
-  border: none;
-  color: #0d0d0d;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 5px;
-  width: 85%;
-  border: 2px solid #f6f6f6;
-  -webkit-transition: all 0.5s ease-in-out;
-  -moz-transition: all 0.5s ease-in-out;
-  -ms-transition: all 0.5s ease-in-out;
-  -o-transition: all 0.5s ease-in-out;
-  transition: all 0.5s ease-in-out;
-  -webkit-border-radius: 5px 5px 5px 5px;
-  border-radius: 5px 5px 5px 5px;
-}
-
-input[type="text"]:focus {
-  background-color: #fff;
-  border-bottom: 2px solid #5fbae9;
-}
-
-input[type="text"]:placeholder {
-  color: #cccccc;
-}
-
-/* ANIMATIONS */
-
-/* Simple CSS3 Fade-in-down Animation */
-.fadeInDown {
-  -webkit-animation-name: fadeInDown;
-  animation-name: fadeInDown;
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-
-@-webkit-keyframes fadeInDown {
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, -100%, 0);
-    transform: translate3d(0, -100%, 0);
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: none;
-    transform: none;
-  }
-}
-
-@keyframes fadeInDown {
-  0% {
-    opacity: 0;
-    -webkit-transform: translate3d(0, -100%, 0);
-    transform: translate3d(0, -100%, 0);
-  }
-  100% {
-    opacity: 1;
-    -webkit-transform: none;
-    transform: none;
-  }
-}
-
-/* Simple CSS3 Fade-in Animation */
-@-webkit-keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@-moz-keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.fadeIn {
-  opacity: 0;
-  -webkit-animation: fadeIn ease-in 1;
-  -moz-animation: fadeIn ease-in 1;
-  animation: fadeIn ease-in 1;
-
-  -webkit-animation-fill-mode: forwards;
-  -moz-animation-fill-mode: forwards;
-  animation-fill-mode: forwards;
-
-  -webkit-animation-duration: 1s;
-  -moz-animation-duration: 1s;
-  animation-duration: 1s;
-}
-
-.fadeIn.first {
-  -webkit-animation-delay: 0.4s;
-  -moz-animation-delay: 0.4s;
-  animation-delay: 0.4s;
-}
-
-.fadeIn.second {
-  -webkit-animation-delay: 0.6s;
-  -moz-animation-delay: 0.6s;
-  animation-delay: 0.6s;
-}
-
-.fadeIn.third {
-  -webkit-animation-delay: 0.8s;
-  -moz-animation-delay: 0.8s;
-  animation-delay: 0.8s;
-}
-
-.fadeIn.fourth {
-  -webkit-animation-delay: 1s;
-  -moz-animation-delay: 1s;
-  animation-delay: 1s;
-}
-
-/* Simple CSS3 Fade-in Animation */
-.underlineHover:after {
+.input label {
   display: block;
-  left: 0;
-  bottom: -10px;
-  width: 0;
-  height: 2px;
-  background-color: #56baed;
-  content: "";
-  transition: width 0.2s;
+  color: #4e4e4e;
+  margin-bottom: 6px;
 }
 
-.underlineHover:hover {
-  color: #0d0d0d;
+.input.inline label {
+  display: inline;
 }
 
-.underlineHover:hover:after {
+.input input {
+  font: inherit;
   width: 100%;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-/* OTHERS */
+.input.inline input {
+  width: auto;
+}
 
-*:focus {
+.input input:focus {
   outline: none;
+  border: 1px solid #521751;
+  background-color: #eee;
 }
 
-#icon {
-  width: 60%;
+.input select {
+  border: 1px solid #ccc;
+  font: inherit;
+}
+
+.submit {
+  text-align: center;
+}
+
+.submit button {
+  border: 1px solid #521751;
+  border-radius: 5px;
+  color: #521751;
+  margin: 15px auto;
+  padding: 5px 20px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.submit button:hover,
+.submit button:active {
+  background-color: #521751;
+  color: white;
+}
+
+.submit button[disabled],
+.submit button[disabled]:hover,
+.submit button[disabled]:active {
+  border: 1px solid #ccc;
+  background-color: transparent;
+  color: #ccc;
+  cursor: not-allowed;
 }
 </style>
