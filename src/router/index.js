@@ -1,10 +1,10 @@
 import Vue from "vue";
 import Router from "vue-router";
 
-import Home from "views/layout/Home";
-import Admin from "@/components/test/Admin";
 import Login from "@/components/auth/firebase/Login";
 import Signup from "@/components/auth/firebase/Signup";
+import Dashboard from "@/views/pages/Dashboard";
+
 import Error404 from "views/common/Error404";
 import Inbuilding from "views/common/Inbuilding";
 
@@ -15,13 +15,8 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "Home",
-      component: Home
-    },
-    {
-      path: "/admin",
-      name: "Admin",
-      component: Admin
+      name: "Dashboard",
+      component: Dashboard
     },
     {
       path: "/signup",

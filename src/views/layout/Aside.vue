@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div class="myAsdide">
     <div class="sidebar sidebar-dark bg-dark">
       <!--  2.* 無樣式清單 -->
       <ul class="list-unstyled">
@@ -168,7 +168,9 @@
 
 
 <script>
-export default {};
+export default {
+  name: "myAsdide"
+};
 </script>
 
 <style scoped>
