@@ -4,8 +4,6 @@ import Vue from "vue";
 import App from "./App";
 import router from "./router";
 
-import axios from "axios";
-axios.defaults.baseURL = "https://tmuh-arms-6b123.firebaseio.com";
 // import store from "./store/firebase-store";
 
 // Import relatvie CSS files

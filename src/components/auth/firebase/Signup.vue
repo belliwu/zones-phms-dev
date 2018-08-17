@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "@/axios/axios-firebase.js";
 
 export default {
   data() {
@@ -43,11 +43,16 @@ export default {
       const formData = {
         email: this.email,
         password: this.password,
-        confirmPassword: this.confirmPassword
+        confirmPassword: this.confirmPassword,
+        token: this.token
       };
       console.log(formData);
       axios
-        .post("/user.json", formData)
+        .post("/signupNewUser?key=AIzaSyAwO0lOWwdLbSEyQDz5N9AJKuBIKRbpuBI", {
+          email: formData.email,
+          password: formData.password,
+          returnSecureToken: true
+        })
         .then(res => console.log(res))
         .catch(error => console.log(error));
       // this.$store.dispatch('signup', formData)
