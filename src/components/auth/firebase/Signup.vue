@@ -1,8 +1,8 @@
 <template>
   <div id="signup">
     <div class="signup-form">
+      <h2>註冊</h2>
       <form @submit.prevent="onSubmit">
-
         <div class="input">
           <label for="email">E-mail</label>
           <input type="email" id="email" v-model="email">
@@ -64,6 +64,10 @@ export default {
   border-radius: 15px;
   padding: 20px;
   box-shadow: 0 2px 3px #ccc;
+}
+
+h2 {
+  text-align: center;
 }
 
 .input {
