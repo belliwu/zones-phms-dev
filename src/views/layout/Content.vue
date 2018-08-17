@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="content p-4">
     <!-- Router to another pages  -->
     <router-view></router-view>
   </div>
@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "home"
+  name: "content"
 };
 </script>
 

@@ -14,7 +14,7 @@ import Aside from "views/layout/Aside";
 import Content from "views/layout/Content";
 
 export default {
-  name: "App",
+  name: "container",
   components: {
     "app-aside": Aside,
     "app-content": Content

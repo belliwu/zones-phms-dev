@@ -29,7 +29,7 @@ export default {
     return {
       email: "",
       password: "",
-      tokern: ""
+      token: ""
     };
   },
   methods: {
@@ -40,7 +40,7 @@ export default {
       };
       console.log(formData);
       axios
-        .post("https://tmuh-arms-6b123.firebaseio.com/user.json", formData)
+        .post("/user.json", formData)
         .then(res => console.log(res))
         .catch(error => console.log(error));
       // this.$store.dispatch('signup', formData)
