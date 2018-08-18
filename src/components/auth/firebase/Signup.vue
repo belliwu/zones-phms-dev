@@ -27,118 +27,108 @@
 </template>
 
 <script>
-import axios from "@/axios/axios-firebase.js";
-
-export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      confirmPassword: "",
-      token: ""
-    };
-  },
-  methods: {
-    onSubmit() {
-      const formData = {
-        email: this.email,
-        password: this.password,
-        confirmPassword: this.confirmPassword,
-        token: this.token
+  export default {
+    data() {
+      return {
+        email: "",
+        password: "",
+        confirmPassword: "",
+        token: ""
       };
-      console.log(formData);
-      axios
-        .post("/signupNewUser?key=AIzaSyAwO0lOWwdLbSEyQDz5N9AJKuBIKRbpuBI", {
-          email: formData.email,
-          password: formData.password,
-          returnSecureToken: true
-        })
-        .then(res => console.log(res))
-        .catch(error => console.log(error));
-      // this.$store.dispatch('signup', formData)
+    },
+    methods: {
+      onSubmit() {
+        const formData = {
+          email: this.email,
+          password: this.password,
+          confirmPassword: this.confirmPassword,
+          token: this.token
+        };
+        console.log(formData);
+        this.$store.dispatch("signup", formData);
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped>
-.signup-form {
-  width: 400px;
-  margin: 30px auto;
-  border: 1px solid #eee;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 2px 3px #ccc;
-}
+  .signup-form {
+    width: 400px;
+    margin: 30px auto;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 3px #ccc;
+  }
 
-h2 {
-  text-align: center;
-}
+  h2 {
+    text-align: center;
+  }
 
-.input {
-  margin: 10px auto;
-}
+  .input {
+    margin: 10px auto;
+  }
 
-.input label {
-  display: block;
-  color: #4e4e4e;
-  margin-bottom: 6px;
-}
+  .input label {
+    display: block;
+    color: #4e4e4e;
+    margin-bottom: 6px;
+  }
 
-.input.inline label {
-  display: inline;
-}
+  .input.inline label {
+    display: inline;
+  }
 
-.input input {
-  font: inherit;
-  width: 100%;
-  padding: 6px 12px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
+  .input input {
+    font: inherit;
+    width: 100%;
+    padding: 6px 12px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
 
-.input.inline input {
-  width: auto;
-}
+  .input.inline input {
+    width: auto;
+  }
 
-.input input:focus {
-  outline: none;
-  border: 1px solid #521751;
-  background-color: #eee;
-}
+  .input input:focus {
+    outline: none;
+    border: 1px solid #521751;
+    background-color: #eee;
+  }
 
-.input select {
-  border: 1px solid #ccc;
-  font: inherit;
-}
+  .input select {
+    border: 1px solid #ccc;
+    font: inherit;
+  }
 
-.submit {
-  text-align: center;
-}
+  .submit {
+    text-align: center;
+  }
 
-.submit button {
-  border: 1px solid #521751;
-  border-radius: 5px;
-  color: #521751;
-  margin: 15px auto;
-  padding: 5px 20px;
-  font: inherit;
-  cursor: pointer;
-}
+  .submit button {
+    border: 1px solid #521751;
+    border-radius: 5px;
+    color: #521751;
+    margin: 15px auto;
+    padding: 5px 20px;
+    font: inherit;
+    cursor: pointer;
+  }
 
-.submit button:hover,
-.submit button:active {
-  background-color: #521751;
-  color: white;
-}
+  .submit button:hover,
+  .submit button:active {
+    background-color: #521751;
+    color: white;
+  }
 
-.submit button[disabled],
-.submit button[disabled]:hover,
-.submit button[disabled]:active {
-  border: 1px solid #ccc;
-  background-color: transparent;
-  color: #ccc;
-  cursor: not-allowed;
-}
+  .submit button[disabled],
+  .submit button[disabled]:hover,
+  .submit button[disabled]:active {
+    border: 1px solid #ccc;
+    background-color: transparent;
+    color: #ccc;
+    cursor: not-allowed;
+  }
 </style>
