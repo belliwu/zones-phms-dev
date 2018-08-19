@@ -2,47 +2,32 @@
   <div class="dashboard">
     <h1>That is the Dasboard !</h1>
     <p>You should only get here if you are authenticated !</p>
-    <p>Your Email address is {{email}}</p>
+    <p>Your email address: {{ email }}</p>
   </div>
 </template>
 
 <script>
-import axios from "@/axios/axios-firebase.js";
+  import axios from "@/axios/axios-firebase.js";
 
-export default {
-  name: "dashboard",
-  data() {
-    return {
-      email: ""
-    };
-  },
-  created() {
-    axios
-      .get("/user.json")
-      .then(res => {
-        console.log(res);
-        const data = res.data;
-        const users = [];
-        for (let key in data) {
-          const user = data[key];
-          user.id = key;
-          users.push(user);
-        }
-        console.log(users);
-        this.email = users[0].email;
-      })
-      .catch(error => console.log(error));
-  }
-};
+  export default {
+    computed: {
+      email() {
+        return !this.$store.getters.user ? false : this.$store.getters.user.email;
+      }
+    },
+    created() {
+      this.$store.dispatch("fetchUser");
+    }
+  };
 </script>
 
 <style scoped>
-.dashboard {
-  text-align: center;
-  margin-top: 20px auto;
-}
+  .dashboard {
+    text-align: center;
+    margin-top: 20px auto;
+  }
 
-p {
-  color: red;
-}
+  p {
+    color: red;
+  }
 </style>
