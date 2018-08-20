@@ -50,14 +50,14 @@ export default {
         .then(() => {
           // 接收 resolve
           console.log(
-            "BELLIWU >>> 4. Login: get Promise resolve AND Routes to Dashbpard page ..."
+            "BELLIWU>>> 4. Login: get Promise resolve AND Routes to Dashbpard page ..."
           );
           // 使用 $router.push 轉跳到 Dashboard Page
           this.$router.push("/dashboard");
         })
         .catch(() => {
           // 接收 reject
-          console.log("BELLIWU >>>1. Login: error get Promise reject !");
+          console.log("BELLIWU>>> 4. Login: error get Promise reject !");
         });
     }
   }

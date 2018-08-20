@@ -32,9 +32,7 @@ export default {
     return {
       email: "",
       password: "",
-      confirmPassword: "",
-      idToken: "",
-      userId: ""
+      confirmPassword: ""
     };
   },
   methods: {
@@ -42,11 +40,9 @@ export default {
       const signupData = {
         email: this.email,
         password: this.password,
-        confirmPassword: this.confirmPassword,
-        idToken: this.idToken,
-        userId: this.userId
+        confirmPassword: this.confirmPassword
       };
-      console.log("BELLIWU >>> submit() : ", signupData);
+      console.log("BELLIWU>>> 1.Signup submit() : ", signupData);
 
       // Store response data to vuex store
       this.$store
@@ -54,14 +50,14 @@ export default {
         .then(() => {
           // 接收 resolve
           console.log(
-            "BELLIWU >>> 4. Signup: get Promise resolve AND Routes to Dashbpard page ..."
+            "BELLIWU>>> 4. Signup: get Promise resolve AND Routes to Dashbpard page ..."
           );
           // 使用 $router.push 轉跳到 Dashboard Page
           this.$router.push("/dashboard");
         })
         .catch(() => {
           // 接收 reject
-          console.log("BELLIWU >>>1. Signup: error get Promise reject!");
+          console.log("BELLIWU>>>4. Signup: error get Promise reject!");
         });
     }
   }

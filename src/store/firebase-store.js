@@ -38,12 +38,15 @@ let store = new Vuex.Store({
           })
           .then(response => {
             console.log("BELLIWU>>> 1. Singup response : ", response);
+
+            // Store idToken and userId into State Object
+            console.log("BELLIWU>>> 2. authUser() to store state ...");
             commit("authUser", {
               token: response.data.idToken,
               userId: response.data.localId
             });
 
-            console.log("BELLIWU>>> 2. authUser() to store state ...");
+            // Store signupData into firebase
             dispatch("storeUser", signupData);
 
             console.log("BELLIWU>>> 3. Singup Promise resolve");
@@ -82,7 +85,7 @@ let store = new Vuex.Store({
 
     storeUser({ commit, state }, userData) {
       if (!state.idToken) return;
-      console.log(">>><<< storeUser() : state.idToken : ", state.idToken);
+      console.log("BELLIWU>>> Signup storeUser() -> state.idToken");
       globalAxios
         .post("/users.json" + "?auth=" + state.idToken, userData)
         .then(res => console.log(res))
@@ -90,10 +93,7 @@ let store = new Vuex.Store({
     },
 
     fetchUser({ commit, state }) {
-      console.log(
-        "BELLIWU>>> 1. fetchUser() : state.idToken : ",
-        state.idToken
-      );
+      console.log("BELLIWU>>> 1. Dashboard fetchUser() -> state.idToken");
       if (!state.idToken) return;
       globalAxios
         .get("/users.json" + "?auth=" + state.idToken)
