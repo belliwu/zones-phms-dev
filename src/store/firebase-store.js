@@ -120,6 +120,10 @@ let store = new Vuex.Store({
   getters: {
     user(state) {
       return state.user;
+    },
+
+    isAuthenticated(state) {
+      return state.idToken !== null;
     }
   }
 });
