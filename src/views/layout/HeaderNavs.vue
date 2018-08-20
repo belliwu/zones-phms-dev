@@ -35,10 +35,11 @@
             簽到
           </router-link>
 
-          <router-link class="dropdown-item" to="/logout" v-if="auth">
+          <a href="" class="dropdown-item" @click.prevent="logout" v-if="auth">
             <i class="fas fa-sign-out-alt"></i>
             登出
-          </router-link>
+          </a>
+
         </div>
         <!-- End for "User" dropdown menu -->
       </li>
@@ -57,6 +58,12 @@ export default {
 
     email() {
       return !this.$store.getters.user ? false : this.$store.getters.user.email;
+    }
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("logout");
+      this.$router.push({ name: "Login" });
     }
   }
 };

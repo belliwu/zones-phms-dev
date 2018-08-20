@@ -8,8 +8,8 @@ Vue.use(Vuex);
 let store = new Vuex.Store({
   //1. State Object is vuex core
   state: {
-    idToken: null,
-    userId: null,
+    idToken: null, //login OK , firebase will return IdToken
+    userId: null, //firebase databaser user record Id
     user: null
   },
 
@@ -23,6 +23,11 @@ let store = new Vuex.Store({
     // Store all user information
     storeUser(state, user) {
       state.user = user;
+    },
+
+    clearAuthData(state) {
+      state.idToken = null;
+      state.userId = null;
     }
   },
 
@@ -81,6 +86,12 @@ let store = new Vuex.Store({
             reject();
           });
       });
+    },
+
+    logout({ commit }) {
+      commit("clearAuthData");
+      console.log("BELLIWU>>> 1. Commit logout action");
+      // Have to setup user active="false" in sprongboot
     },
 
     storeUser({ commit, state }, userData) {
