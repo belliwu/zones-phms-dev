@@ -3,13 +3,13 @@
 import Vue from "vue";
 import App from "./App";
 import router from "./router";
-import axios from 'axios'
-import store from "@/store/firebase-store";
+import axios from "axios";
+import store from "@/store/zones-store";
 
 // NOTE: JWT Server uses axios.baseURL and Backend Server uses
-// axiox.defaults.baseUTL.  
-axios.defaults.baseURL = "https://tmuh-arms-6b123.firebaseio.com";
-// axios.defaults.baseURL = "https://140.92.24.51";
+// axiox.defaults.baseUTL.
+// axios.defaults.baseURL = "https://tmuh-arms-6b123.firebaseio.com";
+axios.defaults.baseURL = "http://localhost:8081";
 
 // Import relatvie CSS files
 require("static/css/bootstrap.min.css");

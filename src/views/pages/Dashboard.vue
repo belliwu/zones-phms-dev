@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import axios from "@/axios/axios-firebase.js";
 
 export default {
   computed: {

@@ -12,7 +12,7 @@ export default {
   name: "myLogo",
   data() {
     return {
-      logo_title: "TMUH-ARMS 生殖醫學個案管理系統"
+      logo_title: "TMUH-ARMS   生殖醫學個案管理系統"
     };
   }
 };

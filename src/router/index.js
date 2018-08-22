@@ -45,11 +45,11 @@ export default new Router({
     {
       path: "/dashboard",
       name: "Dashboard",
-      component: Dashboard,
-      beforeEnter(to, from, next) {
-        if (store.state.idToken) next();
-        else next("/login");
-      }
+      component: Dashboard
+      // beforeEnter(to, from, next) {
+      //   if (store.state.idToken) next(); //for firebase
+      //   else next("/login");
+      // }
     }
   ]
 });
