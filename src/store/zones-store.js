@@ -15,8 +15,7 @@ export default new Vuex.Store({
       jwtToken: null, // login OK , firebase will return IdToken
       jwtUserId: null, // firebase Authentication useId
       userId: null, // Accountmngr userId
-      email: null, // Include email and password of user
-      active: false // Pass first verification when signUp
+      email: null // Include email and password of user
     }
   },
 
@@ -132,13 +131,7 @@ export default new Vuex.Store({
         .then(response => {
           console.log("BELLIWU>>> 3. AccountMngr Login RESPONSE: ", response);
           let data = response.data;
-          let user = {
-            jwtToken: data.token,
-            jwtUserId: null,
-            userId: data.id, // Accountmngr userId
-            email: data.email, // Include email and password of user
-            active: data.active
-          };
+          let user = { jwtToken: data.token, jwtUserId: null, userId: data.userId, email: data.email }; // Accountmngr userId // Include email and password of user
           commit("storeUser", user);
           console.log("BELLIWU>>> 4. Store user login information");
 

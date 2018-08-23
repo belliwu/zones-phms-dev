@@ -2,8 +2,8 @@ import Vue from "vue";
 import Router from "vue-router";
 import store from "@/store/firebase-store";
 
-import Login from "@/components/auth/firebase/Login";
-import Signup from "@/components/auth/firebase/Signup";
+import Login from "@/components/auth/Login";
+import Signup from "@/components/auth/Signup";
 import Dashboard from "@/views/pages/Dashboard";
 import Error404 from "views/common/Error404";
 import Inbuilding from "views/common/Inbuilding";
