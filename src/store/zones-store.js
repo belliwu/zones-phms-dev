@@ -6,7 +6,7 @@ import router from "@/router";
 
 Vue.use(Vuex);
 
-let store = new Vuex.Store({
+export default new Vuex.Store({
   //1. State Object is vuex core
   //userProfile is defined as below
   // jwtToken, jwtUserid, userId, email, active
@@ -16,7 +16,7 @@ let store = new Vuex.Store({
       jwtUserId: null, // firebase Authentication useId
       userId: null, // Accountmngr userId
       email: null, // Include email and password of user
-      active: false
+      active: false // Pass first verification when signUp
     }
   },
 
@@ -26,7 +26,7 @@ let store = new Vuex.Store({
     authUser(state, authData) {
       state.user.jwtToken = authData.jwtToken;
       state.user.jwtUserId = authData.jwtUserId;
-      state.user.userId = authData.userid;
+      state.user.userId = authData.userId;
     },
 
     // Store all user information
@@ -35,11 +35,10 @@ let store = new Vuex.Store({
     },
 
     clearAuthData(state) {
-      state.jwtToken = null;
-      state.jwtUserId = null;
-      state.userId = null;
-      state.email = null;
-      state.active = false;
+      state.user.jwtToken = null;
+      state.user.jwtUserId = null;
+      state.user.userId = null;
+      state.user.email = null;
     }
   },
 
@@ -152,25 +151,20 @@ let store = new Vuex.Store({
         });
     }, //for activeUser
 
-    logout({ commit, dispatch }) {
-      commit("clearAuthData");
-      console.log("BELLIWU>>> 1. Commit logout action");
+    logout({ commit, state }) {
+      console.log("BELLIWU>>> 1 Submit Logout with param : ", state.user.email);
+      globalAxios
+        .post("/user/logout/", { email: state.user.email })
+        .then(response => {
+          console.log("BELLIWU>>> 2. Logout RESPONSE : ", response);
 
-      // Have to setup user active="false" in sprongboot
-      // dispatch("disActiveUser");
+          commit("clearAuthData");
 
-      //Redirect to Login page
-      router.replace("/login");
-      console.log("BELLIWU>>> 3. Redirect to Login page");
-    },
-
-    // Disactive User user for AccountManager
-    disActiveUser({ state }) {
-      if (!state.user.jwtToken) {
-        console.log("BELLIWU>>> 2. Logout disActiveUser() jwtToken is NULL");
-        return;
-      }
-      globalAxios.post("/user/logout");
+          //Redirect to Login page
+          router.replace("/login");
+          console.log("BELLIWU>>> 3. Redirect to LOGIN page");
+        })
+        .catch(error => console.log(error));
     },
 
     // Called for Dashboard
@@ -219,5 +213,3 @@ let store = new Vuex.Store({
     }
   }
 });
-
-export default store;
