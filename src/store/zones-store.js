@@ -163,7 +163,10 @@ export default new Vuex.Store({
     }, //for activeUser
 
     logout({ commit, state }) {
-      console.log("BELLIWU>>> 1 Submit Logout with param : ", state.user.email);
+      console.log(
+        "BELLIWU>>> 1. Submit Logout with param : ",
+        state.user.email
+      );
       globalAxios
         .post("/user/logout/", { email: state.user.email })
         .then(response => {
@@ -174,6 +177,36 @@ export default new Vuex.Store({
           //Redirect to Login page
           router.replace("/login");
           console.log("BELLIWU>>> 3. Redirect to LOGIN page");
+        })
+        .catch(error => console.log(error));
+    },
+
+    delUser({ commit, state }) {
+      axios
+        .post("/deleteAccount?key=AIzaSyAwO0lOWwdLbSEyQDz5N9AJKuBIKRbpuBI", {
+          idToken: state.user.jwtToken
+        })
+        .then(response => {
+          console.log(response);
+          console.log("BELLIWU>>> 1. DeletUser RESPONSE : ", response);
+
+          console.log(
+            "BELLIWU>>> 2. Fire Delete User API to AccountMngar with parameter : ",
+            state.user.email
+          );
+
+          globalAxios
+            .delete("/user", { data: { email: state.user.email } })
+            .then(response => {
+              console.log("BELLIWU>>> 3. Delete User response", response);
+            })
+            .catch(error => console.log(error));
+
+          console.log("BELLIWU>>> 4. Clear Auth Data");
+          commit("clearAuthData");
+
+          console.log("BELLIWU>>> 5. Redirect Singup Page");
+          router.replace("/signup");
         })
         .catch(error => console.log(error));
     },

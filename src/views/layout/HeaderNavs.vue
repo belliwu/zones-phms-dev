@@ -27,17 +27,22 @@
 
           <router-link class="dropdown-item" to="/signup" v-if="!auth">
             <i class="fas fa-user-plus"></i>
-            註冊
+            註冊帳戶
           </router-link>
 
           <router-link class="dropdown-item" to="/login" v-if="!auth">
             <i class="fas fa-sign-in-alt"></i>
-            簽到
+            簽到系統
           </router-link>
 
           <a href="" class="dropdown-item" @click.prevent="logout" v-if="auth">
             <i class="fas fa-sign-out-alt"></i>
-            登出
+            登出系統
+          </a>
+
+          <a href="" class="dropdown-item" @click.prevent="delUser" v-if="auth">
+            <i class="fas fa-user-minus"></i>
+            刪除帳戶
           </a>
 
         </div>
@@ -63,7 +68,9 @@ export default {
   methods: {
     logout() {
       this.$store.dispatch("logout");
-      this.$router.push({ name: "Login" });
+    },
+    delUser() {
+      this.$store.dispatch("delUser");
     }
   }
 };

@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import store from "@/store/firebase-store";
 
 import Login from "@/components/auth/Login";
 import Signup from "@/components/auth/Signup";
