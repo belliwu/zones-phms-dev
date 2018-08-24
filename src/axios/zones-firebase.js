@@ -9,5 +9,6 @@ const instance = axios.create({
 });
 
 instance.defaults.headers.get["Accepts"] = "application/json";
-// instance.defaults.headers.common["Something"] = "Something";
+// instance.defaults.headers.get["Access-Control-Expose-Headers"] = "Authorization"
+
 export default instance;

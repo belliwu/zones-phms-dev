@@ -22,7 +22,7 @@
           <button type="submit" class="myButton">提交</button>
         </div>
       </form>
-      <div class="feedback">{{feedback}}</div>
+      <div class="feedback" v-if="feedback">{{feedback}}</div>
     </div>
   </div>
 </template>
@@ -33,14 +33,20 @@ export default {
     return {
       email: "",
       password: "",
-      confirmPassword: "",
-      feedback: ""
+      confirmPassword: ""
     };
+  },
+  computed: {
+    feedback() {
+      return !this.$store.getters.feedback
+        ? false
+        : this.$store.getters.feedback;
+    }
   },
   methods: {
     onSubmit() {
       const signupData = {
-        token:null,
+        token: null,
         email: this.email,
         password: this.password
       };
@@ -133,5 +139,9 @@ h2 {
   background-color: transparent;
   color: #ccc;
   cursor: not-allowed;
+}
+
+.feedback {
+  text-align: center;
 }
 </style>

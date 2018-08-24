@@ -16,7 +16,8 @@ export default new Vuex.Store({
       jwtUserId: null, // firebase Authentication useId
       userId: null, // Accountmngr userId
       email: null // Include email and password of user
-    }
+    },
+    feedback: null
   },
 
   //2. Store any data into State Object , have to by mutation
@@ -33,6 +34,10 @@ export default new Vuex.Store({
       state.user = user;
     },
 
+    feedback(state, myFeedback) {
+      state.feedback = myFeedback;
+    },
+
     clearAuthData(state) {
       state.user.jwtToken = null;
       state.user.jwtUserId = null;
@@ -44,6 +49,7 @@ export default new Vuex.Store({
   //3. Provide interfaces to store data into State Object for application
   actions: {
     signup({ commit, dispatch }, signupData) {
+      commit("clearAuthData");
       axios
         .post("/signupNewUser?key=AIzaSyAwO0lOWwdLbSEyQDz5N9AJKuBIKRbpuBI", {
           email: signupData.email,
@@ -68,7 +74,7 @@ export default new Vuex.Store({
           // Store signupData to Remote AccountMngr microservice
           dispatch("signupUser", signupData);
         })
-        .catch(error => console.log(error));
+        .catch(error => console.log(code));
     },
 
     // Store signupData to remote AccountMngr microservice
@@ -94,9 +100,9 @@ export default new Vuex.Store({
             userId: response.data.userId //from AccountMngr userId
           });
 
-          //Redirect to Login page
-          router.replace("/login");
-          console.log("BELLIWU>>> 8. Redirect to Login page");
+          //Redirect to Dashboard page
+          router.replace("/dashboard");
+          console.log("BELLIWU>>> 8. Redirect to Dashboard page");
         })
         .catch(error => console.log(error));
     },
@@ -131,7 +137,19 @@ export default new Vuex.Store({
         .then(response => {
           console.log("BELLIWU>>> 3. AccountMngr Login RESPONSE: ", response);
           let data = response.data;
-          let user = { jwtToken: data.token, jwtUserId: null, userId: data.userId, email: data.email }; // Accountmngr userId // Include email and password of user
+          if (data.cause === "no_signup") {
+            let myFeedback = "你還沒有註冊, 請註冊 !";
+            commit("feedback", myFeedback);
+            commit("clearAuthData");
+            router.replace("/signup");
+            return;
+          }
+          let user = {
+            jwtToken: data.token,
+            jwtUserId: null,
+            userId: data.userId,
+            email: data.email
+          }; // Accountmngr userId // Include email and password of user
           commit("storeUser", user);
           console.log("BELLIWU>>> 4. Store user login information");
 
@@ -203,6 +221,10 @@ export default new Vuex.Store({
 
     isAuthenticated(state) {
       return state.user.jwtToken !== null;
+    },
+
+    feedback(state) {
+      return state.feedback;
     }
   }
 });
