@@ -133,7 +133,7 @@ export default new Vuex.Store({
         .catch(error =>
         {
           console.log("BELLIWU>>> 6. User signup RESPONSE : ", error);
-          commit("feedback", "系統或網路故障，客服電話: 02-6607-2992");
+          commit("feedback", "系統或網路問題，客服電話: 02-6607-2992");
         });
     },
 
@@ -154,7 +154,13 @@ export default new Vuex.Store({
           });
           dispatch("activeUser", loginData);
         })
-        .catch(error => console.log(error));
+        .catch(error =>
+        {
+          let myError = error.response.data.error;
+          console.log("BELLIWU>>> 1. Firebase error code : ", myError.code);
+          console.log("BELLIWU>>> 1. Firebase error message : ", myError.message);
+          commit("feedback", "你還沒有註冊, 請註冊 !");
+        })
     },
 
     // Active user for AccountManager
@@ -252,6 +258,7 @@ export default new Vuex.Store({
 
           console.log("BELLIWU>>> 4. Clear Auth Data");
           commit("clearAuthData");
+          commit("resetFeedback");
 
           console.log("BELLIWU>>> 5. Redirect Singup Page");
           router.replace("/signup");
@@ -261,6 +268,8 @@ export default new Vuex.Store({
           let myError = error.response.data.error;
           console.log("BELLIWU>>> 1. Firebase error code : ", myError.code);
           console.log("BELLIWU>>> 1. Firebase error message : ", myError.message);
+
+          commit("clearLoginData");
 
           //Redirect to Login page
           router.replace("/login");
