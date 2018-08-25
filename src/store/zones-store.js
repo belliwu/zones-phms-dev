@@ -23,24 +23,39 @@ export default new Vuex.Store({
   //2. Store any data into State Object , have to by mutation
   mutations: {
     // Store idToken and userId after signup
-    authUser(state, authData) {
+    authUser(state, authData)
+    {
       state.user.jwtToken = authData.jwtToken;
       state.user.jwtUserId = authData.jwtUserId;
       state.user.userId = authData.userId;
     },
 
     // Store all user information
-    storeUser(state, user) {
+    storeUser(state, user)
+    {
       state.user = user;
     },
 
-    feedback(state, myFeedback) {
+    feedback(state, myFeedback)
+    {
       state.feedback = myFeedback;
     },
 
-    clearAuthData(state) {
+    resetFeedback(state)
+    {
+      state.feedback = null;
+    },
+
+    clearAuthData(state)
+    {
       state.user.jwtToken = null;
       state.user.jwtUserId = null;
+      state.user.userId = null;
+      state.user.email = null;
+    },
+
+    clearLoginData(state)
+    {
       state.user.userId = null;
       state.user.email = null;
     }
@@ -48,15 +63,16 @@ export default new Vuex.Store({
 
   //3. Provide interfaces to store data into State Object for application
   actions: {
-    signup({ commit, dispatch }, signupData) {
-      commit("clearAuthData");
+    signup({ commit, dispatch }, signupData)
+    {
       axios
         .post("/signupNewUser?key=AIzaSyAwO0lOWwdLbSEyQDz5N9AJKuBIKRbpuBI", {
           email: signupData.email,
           password: signupData.password,
           returnSecureToken: true
         })
-        .then(response => {
+        .then(response =>
+        {
           console.log("BELLIWU>>> 2. Singup RESPONSE : ", response);
 
           // Store idToken and userId of firebase into State.user Object
@@ -74,12 +90,18 @@ export default new Vuex.Store({
           // Store signupData to Remote AccountMngr microservice
           dispatch("signupUser", signupData);
         })
-        .catch(error => console.log(code));
+        .catch(error =>
+        {
+          console.log("BELLIWU>>> 2. Singup RESPONSE : ", error);
+          commit("feedback", "帳號已存在， 請重新登錄 !");
+        });
     },
 
     // Store signupData to remote AccountMngr microservice
-    signupUser({ commit, state }, signupData) {
-      if (!state.user.jwtToken) {
+    signupUser({ commit, state }, signupData)
+    {
+      if (!state.user.jwtToken)
+      {
         console.log("BELLIWU>>> 5. SignupUser jwtToken is NULL");
         return;
       }
@@ -88,7 +110,8 @@ export default new Vuex.Store({
       );
       globalAxios
         .post("/user/signup", signupData)
-        .then(response => {
+        .then(response =>
+        {
           console.log("BELLIWU>>> 6. SingupUser RESPONSE : ", response);
           console.log(
             "BELLIWU>>> 7. SingupUser RESPONSE userId : ",
@@ -107,14 +130,16 @@ export default new Vuex.Store({
         .catch(error => console.log(error));
     },
 
-    login({ commit, dispatch }, loginData) {
+    login({ commit, dispatch }, loginData)
+    {
       axios
         .post("/verifyPassword?key=AIzaSyAwO0lOWwdLbSEyQDz5N9AJKuBIKRbpuBI", {
           email: loginData.email,
           password: loginData.password,
           returnSecureToken: true
         })
-        .then(response => {
+        .then(response =>
+        {
           console.log("BELLIWU>>> 1. Firebase Login RESPONSE : ", response);
           commit("authUser", {
             jwtToken: response.data.idToken,
@@ -126,20 +151,23 @@ export default new Vuex.Store({
     },
 
     // Active user for AccountManager
-    activeUser({ commit, state }, loginData) {
-      if (!state.user.jwtToken) {
+    activeUser({ commit, state }, loginData)
+    {
+      if (!state.user.jwtToken)
+      {
         console.log("BELLIWU>>> 2. Login ActiveUser() jwtToken is NULL");
         return;
       }
 
       globalAxios
         .post("/user/login", loginData)
-        .then(response => {
+        .then(response =>
+        {
           console.log("BELLIWU>>> 3. AccountMngr Login RESPONSE: ", response);
           let data = response.data;
-          if (data.cause === "no_signup") {
-            let myFeedback = "你還沒有註冊, 請註冊 !";
-            commit("feedback", myFeedback);
+          if (data.cause === "no_signup")
+          {
+            commit("feedback", "你還沒有註冊, 請註冊 !");
             commit("clearAuthData");
             router.replace("/signup");
             return;
@@ -157,19 +185,25 @@ export default new Vuex.Store({
           router.replace("/dashboard");
           console.log("BELLIWU>>> 5. Redirect to dashboard page");
         })
-        .catch(error => {
-          console.log(error);
+        .catch(error =>
+        {
+          console.log("BELLIWU>>> 3. Login User RESPONSE : ", error);
+          commit("feedback", "系統或網路故障，客服電話: 02-6607-2992");
         });
     }, //for activeUser
 
-    logout({ commit, state }) {
+    logout({ commit, state })
+    {
+      commit("clearLoginData");
+      commit("resetFeedback");
       console.log(
         "BELLIWU>>> 1. Submit Logout with param : ",
         state.user.email
       );
       globalAxios
         .post("/user/logout/", { email: state.user.email })
-        .then(response => {
+        .then(response =>
+        {
           console.log("BELLIWU>>> 2. Logout RESPONSE : ", response);
 
           commit("clearAuthData");
@@ -181,26 +215,34 @@ export default new Vuex.Store({
         .catch(error => console.log(error));
     },
 
-    delUser({ commit, state }) {
+    delUser({ commit, state })
+    {
+      commit("clearAuthData");
+      commit("resetFeedback");
       axios
         .post("/deleteAccount?key=AIzaSyAwO0lOWwdLbSEyQDz5N9AJKuBIKRbpuBI", {
           idToken: state.user.jwtToken
         })
-        .then(response => {
-          console.log(response);
-          console.log("BELLIWU>>> 1. DeletUser RESPONSE : ", response);
+        .then(response =>
+        {
+          console.log("BELLIWU>>> 1. DeletUser RESPONSE from firebase : ", response);
 
           console.log(
-            "BELLIWU>>> 2. Fire Delete User API to AccountMngar with parameter : ",
+            "BELLIWU>>> 2. Ready fire Delete User API to AccountMngar with parameter : ",
             state.user.email
           );
 
           globalAxios
             .delete("/user", { data: { email: state.user.email } })
-            .then(response => {
+            .then(response =>
+            {
               console.log("BELLIWU>>> 3. Delete User response", response);
             })
-            .catch(error => console.log(error));
+            .catch(error =>
+            {
+              console.log("BELLIWU>>> 3. Delete User response", error);
+              // commit("feedback", error)
+            });
 
           console.log("BELLIWU>>> 4. Clear Auth Data");
           commit("clearAuthData");
@@ -212,8 +254,10 @@ export default new Vuex.Store({
     },
 
     // Called for Dashboard
-    fetchUser({ commit, state }) {
-      if (!state.user.jwtToken) {
+    fetchUser({ commit, state })
+    {
+      if (!state.user.jwtToken)
+      {
         console.log(
           "BELLIWU>>> 1. Dashboard fetchUser() state.user.jwtToken == NULL"
         );
@@ -225,7 +269,8 @@ export default new Vuex.Store({
       );
       globalAxios
         .get("/user/" + state.user.userId)
-        .then(response => {
+        .then(response =>
+        {
           console.log(
             "BELLIWU>>> 2.  Fetch User by userId response : ",
             response
@@ -248,16 +293,19 @@ export default new Vuex.Store({
   }, //for actions
 
   getters: {
-    user(state) {
+    user(state)
+    {
       return state.user;
     },
 
-    isAuthenticated(state) {
-      return state.user.jwtToken !== null;
+    isAuthenticated(state)
+    {
+      return state.user.jwtToken !== null && state.user.email !== null;
     },
 
-    feedback(state) {
+    feedback(state)
+    {
       return state.feedback;
-    }
+    },
   }
 });

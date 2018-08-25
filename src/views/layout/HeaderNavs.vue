@@ -54,26 +54,27 @@
 </template>
 
 <script>
-export default {
-  name: "headerNavs",
-  computed: {
-    auth() {
-      return this.$store.getters.isAuthenticated;
-    },
+  export default {
+    name: "headerNavs",
+    computed: {
+      auth() {
+        return this.$store.getters.isAuthenticated;
+      },
 
-    email() {
-      return !this.$store.getters.user ? false : this.$store.getters.user.email;
-    }
-  },
-  methods: {
-    logout() {
-      this.$store.dispatch("logout");
+      email() {
+        return !this.$store.getters.user ? false : this.$store.getters.user.email;
+      }
     },
-    delUser() {
-      this.$store.dispatch("delUser");
+    methods: {
+      logout() {
+        this.$store.dispatch("logout");
+      },
+      
+      delUser() {
+        this.$store.dispatch("delUser");
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped>
