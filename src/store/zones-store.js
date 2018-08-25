@@ -15,7 +15,7 @@ export default new Vuex.Store({
       jwtToken: null, // login OK , firebase will return IdToken
       jwtUserId: null, // firebase Authentication useId
       userId: null, // Accountmngr userId
-      email: null // Include email and password of user
+      email: null   // Include email and password of user
     },
     feedback: null
   },
@@ -92,7 +92,10 @@ export default new Vuex.Store({
         })
         .catch(error =>
         {
-          console.log("BELLIWU>>> 2. Singup RESPONSE : ", error);
+          let myError = error.response.data.error;
+          console.log("BELLIWU>>> 2. Firebase error code : ", myError.code);
+          console.log("BELLIWU>>> 2. Firebase error message : ", myError.message);
+
           commit("feedback", "帳號已存在， 請重新登錄 !");
         });
     },
@@ -127,7 +130,11 @@ export default new Vuex.Store({
           router.replace("/dashboard");
           console.log("BELLIWU>>> 8. Redirect to Dashboard page");
         })
-        .catch(error => console.log(error));
+        .catch(error =>
+        {
+          console.log("BELLIWU>>> 6. User signup RESPONSE : ", error);
+          commit("feedback", "系統或網路故障，客服電話: 02-6607-2992");
+        });
     },
 
     login({ commit, dispatch }, loginData)
@@ -194,8 +201,6 @@ export default new Vuex.Store({
 
     logout({ commit, state })
     {
-      commit("clearLoginData");
-      commit("resetFeedback");
       console.log(
         "BELLIWU>>> 1. Submit Logout with param : ",
         state.user.email
@@ -206,7 +211,8 @@ export default new Vuex.Store({
         {
           console.log("BELLIWU>>> 2. Logout RESPONSE : ", response);
 
-          commit("clearAuthData");
+          commit("clearLoginData");
+          commit("resetFeedback");
 
           //Redirect to Login page
           router.replace("/login");
@@ -217,8 +223,6 @@ export default new Vuex.Store({
 
     delUser({ commit, state })
     {
-      commit("clearAuthData");
-      commit("resetFeedback");
       axios
         .post("/deleteAccount?key=AIzaSyAwO0lOWwdLbSEyQDz5N9AJKuBIKRbpuBI", {
           idToken: state.user.jwtToken
@@ -237,6 +241,8 @@ export default new Vuex.Store({
             .then(response =>
             {
               console.log("BELLIWU>>> 3. Delete User response", response);
+              commit("clearAuthData");
+              commit("resetFeedback");
             })
             .catch(error =>
             {
@@ -250,7 +256,16 @@ export default new Vuex.Store({
           console.log("BELLIWU>>> 5. Redirect Singup Page");
           router.replace("/signup");
         })
-        .catch(error => console.log(error));
+        .catch(error =>
+        {
+          let myError = error.response.data.error;
+          console.log("BELLIWU>>> 1. Firebase error code : ", myError.code);
+          console.log("BELLIWU>>> 1. Firebase error message : ", myError.message);
+
+          //Redirect to Login page
+          router.replace("/login");
+          console.log("BELLIWU>>> 3. Redirect to LOGIN page");
+        });
     },
 
     // Called for Dashboard
